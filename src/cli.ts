@@ -27,7 +27,6 @@ export async function parseArguments(): Promise<ProjectOptions> {
 
     // default values
     let projectName = 'cool-new-project'
-    let projectType: string = 'app'
     let useSupabase = false
 
     // prompts

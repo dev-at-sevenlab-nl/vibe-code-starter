@@ -64,7 +64,7 @@ const loader = ora({
         await installCursorRules(projectName, loader)
 
         // Setup Supabase if requested
-        await setupSupabase(projectName, useSupabase)
+        await setupSupabase(projectName, useSupabase, loader)
 
         console.log()
         console.log(gradientText('Project created. Have fun', colors.greenGradient))
