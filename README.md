@@ -1,1 +1,1 @@
-# vibe
+# Vibe code starter
