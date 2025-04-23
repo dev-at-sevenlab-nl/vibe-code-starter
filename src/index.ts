@@ -54,7 +54,7 @@ const loader = ora({
         // Install Tailwind
         await installTailwind(projectName, loader)
 
-        // Install PrimeVue if desktop project
+        // Install PrimeVue
         await installPrimeVue(projectName, loader)
 
         // Install FontAwesome

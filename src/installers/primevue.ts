@@ -8,7 +8,20 @@ export async function installPrimeVue(projectName: string, loader: Ora) {
     loader.start('Adding Primevue...')
     await execAsync(`cd ${projectName} && npm install primevue && npm i tailwindcss-primeui`, { silent: true })
     
-    const mainPath = path.join(projectName, 'src', 'main.ts')
+    // Check for main.ts or main.js depending on TypeScript usage
+    const mainTsPath = path.join(projectName, 'src', 'main.ts')
+    const mainJsPath = path.join(projectName, 'src', 'main.js')
+    
+    // Determine which main file to use
+    let mainPath: string
+    if (await fileExists(mainTsPath)) {
+        mainPath = mainTsPath
+    } else if (await fileExists(mainJsPath)) {
+        mainPath = mainJsPath
+    } else {
+        throw new Error('Could not find main.ts or main.js file')
+    }
+    
     let mainFile = await fs.readFile(mainPath, 'utf8')
     // Add PrimeVue import
     mainFile = mainFile.replace(
@@ -54,4 +67,14 @@ export async function installPrimeVue(projectName: string, loader: Ora) {
         `cd ${projectName} && curl -s https://gist.githubusercontent.com/dev-at-sevenlab-nl/64954bee61b0ec6e0a7ceec6ffeec3e1/raw/base.css -o ./src/assets/base.css`
     )
     loader.succeed('Primevue added')
+}
+
+// Helper function to check if a file exists
+async function fileExists(filePath: string): Promise<boolean> {
+    try {
+        await fs.access(filePath)
+        return true
+    } catch {
+        return false
+    }
 } 
