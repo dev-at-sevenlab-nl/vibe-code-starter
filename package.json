@@ -16,7 +16,7 @@
         "vibe-code-starter": "./dist/index.js"
     },
     "engines": {
-        "node": ">=18"
+        "node": ">=20"
     },
     "dependencies": {
         "gradient-string": "^3.0.0",

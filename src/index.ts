@@ -304,8 +304,7 @@ const loader = ora({
     );
     loader.succeed('FontAwesome added')
 
-    // i want to change the readme.md file on line 2 append ## put @start in cursor window and press `enter` we know that the file starts with # <projectname> but we dont want to lose that
-    const readmePath = path.join(projectName, 'readme.md');
+    const readmePath = path.join(projectName, 'README.md');
     let readmeFile = await fs.readFile(readmePath, 'utf8');
     const lines = readmeFile.split('\n');
     if (lines[0].startsWith('# ')) {
