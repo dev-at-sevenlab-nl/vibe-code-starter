@@ -13,6 +13,12 @@ import { installCursorRules } from './installers/cursor-rules.js'
 import { configurePrettier } from './installers/prettier.js'
 import { configureEslint } from './installers/eslint.js'
 import { setupSupabase } from './installers/supabase.js'
+import { checkNodeVersion } from './utils/version-check.js'
+
+// Check Node.js version (requires v20 or higher as specified in package.json)
+if (!checkNodeVersion(20)) {
+    process.exit(1)
+}
 
 // init loader
 const loader = ora({
