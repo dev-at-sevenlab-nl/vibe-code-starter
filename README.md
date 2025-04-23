@@ -31,18 +31,6 @@ npm install -g vibe-code-starter
 npx vibe-code-starter
 ```
 
-## 🔨 Usage
-
-```bash
-# Start a new project
-vibe-code-starter my-awesome-app
-
-# With Supabase integration
-vibe-code-starter my-awesome-app --supabase
-```
-
-During setup, you'll be prompted to select your preferred options for the Vue project. Vibe code starter will then enhance your project with additional libraries and configurations.
-
 ## 📋 What's included
 
 - Vue.js project with Vue Router and Pinia
