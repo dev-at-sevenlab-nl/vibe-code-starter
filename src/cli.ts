@@ -7,7 +7,6 @@ import shell from 'shelljs'
 
 export interface ProjectOptions {
     projectName: string
-    projectType: string
     useSupabase: boolean
 }
 
@@ -65,7 +64,6 @@ export async function parseArguments(): Promise<ProjectOptions> {
 
     return {
         projectName,
-        projectType,
         useSupabase
     }
 } 

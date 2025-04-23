@@ -5,7 +5,7 @@ import shell from 'shelljs'
 import { gradientText } from './utils/banner.js'
 import { colors } from './config.js'
 import { parseArguments } from './cli.js'
-import { createVueProject } from './installers/vue.js'
+import { createVueProject, VueProjectOptions } from './installers/vue.js'
 import { installTailwind } from './installers/tailwind.js'
 import { installPrimeVue } from './installers/primevue.js'
 import { installFontAwesome } from './installers/fontawesome.js'
@@ -28,22 +28,28 @@ const loader = ora({
     try {
         // Parse arguments and get project options
         const options = await parseArguments()
-        const { projectName, projectType, useSupabase } = options
+        const { projectName, useSupabase } = options
 
-        // Create Vue project
-        await createVueProject(projectName)
+        // Create Vue project and get selected features
+        const vueOptions: VueProjectOptions = await createVueProject(projectName)
+        
+        // Log detected Vue project options
+        loader.info(`Detected Vue project configuration:`)
+        loader.info(`- TypeScript: ${vueOptions.hasTypeScript ? 'Yes' : 'No'}`)
+        loader.info(`- ESLint: ${vueOptions.hasEslint ? 'Yes' : 'No'}`)
+        loader.info(`- Prettier: ${vueOptions.hasPrettier ? 'Yes' : 'No'}`)
 
-        // Configure ESLint
-        await configureEslint(projectName)
+        // Configure ESLint if selected
+        await configureEslint(projectName, vueOptions.hasEslint, loader)
 
-        // Configure Prettier
-        await configurePrettier(projectName, loader)
+        // Configure Prettier if selected
+        await configurePrettier(projectName, vueOptions.hasPrettier, loader)
 
         // Install Tailwind
         await installTailwind(projectName, loader)
 
         // Install PrimeVue if desktop project
-        await installPrimeVue(projectName, projectType, loader)
+        await installPrimeVue(projectName, loader)
 
         // Install FontAwesome
         await installFontAwesome(projectName, loader)

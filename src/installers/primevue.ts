@@ -4,9 +4,7 @@ import fs from 'fs/promises'
 import execAsync from '../utils/execAsync.js'
 import { fetchJson } from '../utils/fetchJson.js'
 
-export async function installPrimeVue(projectName: string, projectType: string, loader: Ora) {
-    if (projectType !== 'desktop') return
-
+export async function installPrimeVue(projectName: string, loader: Ora) {
     loader.start('Adding Primevue...')
     await execAsync(`cd ${projectName} && npm install primevue && npm i tailwindcss-primeui`, { silent: true })
     

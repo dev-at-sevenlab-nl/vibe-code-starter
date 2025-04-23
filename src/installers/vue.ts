@@ -3,7 +3,13 @@ import execAsync from '../utils/execAsync.js'
 import fs from 'fs/promises'
 import path from 'path'
 
-export async function createVueProject(projectName: string) {
+export interface VueProjectOptions {
+    hasEslint: boolean;
+    hasPrettier: boolean;
+    hasTypeScript: boolean;
+}
+
+export async function createVueProject(projectName: string): Promise<VueProjectOptions> {
     console.log('\n🔨 Creating Vue Web app...')
 
     // Create a promise to handle the spawn process
@@ -46,4 +52,28 @@ export async function createVueProject(projectName: string) {
         lines.splice(1, 0, '## Put `@start.md` in cursor window and press `enter`')
     }
     await fs.writeFile(readmePath, lines.join('\n'), 'utf8')
+
+    // Detect what features were selected during Vue project creation
+    const hasEslint = await fileExists(path.join(projectName, 'eslint.config.js')) || 
+                     await fileExists(path.join(projectName, 'eslint.config.ts')) ||
+                     await fileExists(path.join(projectName, '.eslintrc.js'));
+    const hasPrettier = await fileExists(path.join(projectName, '.prettierrc.json')) || 
+                       await fileExists(path.join(projectName, '.prettierrc'));
+    const hasTypeScript = await fileExists(path.join(projectName, 'tsconfig.json'));
+
+    return {
+        hasEslint,
+        hasPrettier,
+        hasTypeScript
+    };
+}
+
+// Helper function to check if a file exists
+async function fileExists(filePath: string): Promise<boolean> {
+    try {
+        await fs.access(filePath);
+        return true;
+    } catch {
+        return false;
+    }
 } 
