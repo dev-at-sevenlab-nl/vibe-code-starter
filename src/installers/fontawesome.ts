@@ -1,4 +1,4 @@
-import ora, { Ora } from 'ora'
+import { Ora } from 'ora'
 import execAsync from '../utils/execAsync.js'
 import path from 'path'
 import fs from 'fs/promises'
@@ -9,7 +9,6 @@ export async function installFontAwesome(projectName: string, loader: Ora) {
 
     // Check which main file exists
     const mainTsPath = path.join(projectName, 'src', 'main.ts')
-    const mainJsPath = path.join(projectName, 'src', 'main.js')
     
     const mainPath = await fileExists(mainTsPath) ? 'main.ts' : 'main.js'
 

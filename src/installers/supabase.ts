@@ -5,8 +5,16 @@ import { Ora } from 'ora'
 import execAsync from '../utils/execAsync.js'
 import fs from 'fs/promises'
 
-export async function setupSupabase(projectName: string, useSupabase: boolean,loader: Ora) {
-    if (!useSupabase) return
+interface SupabaseConfig {
+    accessToken: string
+}
+
+export async function setupSupabase(
+    projectName: string,
+    useSupabase: boolean,
+    loader: Ora,
+): Promise<SupabaseConfig | null> {
+    if (!useSupabase) return null
 
     // loader.start('Configuring Supabase...')
     console.log(inverse('First, create a supabase project at https://supabase.com/dashboard/projects'))
@@ -101,8 +109,20 @@ export async function setupSupabase(projectName: string, useSupabase: boolean,lo
     // loader.start('Starting supabase (this may take a while)')
     // await execAsync(`cd ${projectName} && npx supabase start`, { silent: false })
 
-    await execAsync(`cd ${projectName} && npx supabase link --project-ref ${supabaseEnvVars.SUPABASE_PROJECT_ID}`, { silent: true })
-    console.log(inverse('Supabase configured, use `npx supabase start` to start supabase locally'))
+    await execAsync(
+        `cd ${projectName} && npx supabase link --project-ref ${supabaseEnvVars.SUPABASE_PROJECT_ID}`,
+        {
+            silent: true,
+        },
+    )
+    console.log(
+        inverse(
+            'Supabase configured, use `npx supabase start` to start supabase locally',
+        ),
+    )
 
     // loader.succeed('Supabase configured')
+    return {
+        accessToken: supabaseEnvVars.SUPABASE_ACCESS_TOKEN,
+    }
 }

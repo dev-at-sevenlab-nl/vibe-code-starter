@@ -14,6 +14,7 @@ import { configurePrettier } from './installers/prettier.js'
 import { configureEslint } from './installers/eslint.js'
 import { setupSupabase } from './installers/supabase.js'
 import { checkNodeVersion } from './utils/version-check.js'
+import { setupMCP } from './installers/mcp.js'
 
 // Check Node.js version (requires v20 or higher as specified in package.json)
 if (!checkNodeVersion(20)) {
@@ -64,8 +65,11 @@ const loader = ora({
         await installCursorRules(projectName, loader)
 
         // Setup Supabase if requested
-        await setupSupabase(projectName, useSupabase, loader)
+        const supabaseConfig = await setupSupabase(projectName, useSupabase, loader)
 
+        // Setup MCP's
+        await setupMCP(projectName, loader, supabaseConfig?.accessToken)
+        
         console.log()
         console.log(gradientText('Project created. Have fun', colors.greenGradient))
         console.log()
